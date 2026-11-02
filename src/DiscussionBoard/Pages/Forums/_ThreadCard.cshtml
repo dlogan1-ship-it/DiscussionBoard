@@ -1,0 +1,7 @@
+@model DiscussionBoard.Models.DiscussionThread
+<article class="card mb-3">
+    <div class="card-body">
+        <h2 class="h5"><a asp-page="/Discussions/Details" asp-route-threadId="@Model.Id">@Model.Title</a></h2>
+        <small class="text-muted">Started by @Model.ApplicationUser?.UserName — @Model.CreatedAt.ToLocalTime().ToString("g")</small>
+    </div>
+</article>

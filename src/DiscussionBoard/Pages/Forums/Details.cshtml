@@ -1,0 +1,32 @@
+@page "/Forum/{id:int}"
+@model ForumDetailsModel
+@{ ViewData["Title"] = Model.Forum.Name; }
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Forums/Index">Forums</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Forum.Name</li>
+    </ol>
+</nav>
+
+<h1>@Model.Forum.Name</h1>
+<p class="lead">@Model.Forum.Description</p>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <a class="btn btn-primary mb-3" asp-page="/Discussions/Create" asp-route-forumId="@Model.Forum.Id">Start a new discussion</a>
+}
+else
+{
+    <p><a asp-area="Identity" asp-page="/Account/Login">Log in</a> to start a discussion.</p>
+}
+
+@if (Model.Threads.Count == 0)
+{
+    <p class="text-muted">No discussions yet.</p>
+}
+
+@foreach (var thread in Model.Threads)
+{
+    <partial name="/Pages/Forums/_ThreadCard.cshtml" model="thread" />
+}

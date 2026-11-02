@@ -42,12 +42,18 @@ namespace DiscussionBoard
 
             builder.Services.AddSingleton<ILogReader, JsonLogReader>();
 
+            builder.Services.AddScoped<ForumService>();
+            builder.Services.AddScoped<DiscussionThreadService>();
+            builder.Services.AddScoped<PostService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+
+                DevelopmentSeedService.SeedAsync(app.Services).GetAwaiter().GetResult();
             }
             else
             {

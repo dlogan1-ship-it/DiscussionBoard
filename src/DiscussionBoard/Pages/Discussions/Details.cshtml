@@ -1,0 +1,46 @@
+@page "/Discussion/{threadId:int}"
+@model DiscussionDetailsModel
+@{ ViewData["Title"] = Model.Discussion.Title; }
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Forums/Index">Forums</a></li>
+        <li class="breadcrumb-item"><a asp-page="/Forums/Details" asp-route-id="@Model.Discussion.ForumId">@Model.Discussion.Forum?.Name</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Discussion.Title</li>
+    </ol>
+</nav>
+
+<section class="mb-4">
+    <h1>@Model.Discussion.Title</h1>
+    <small class="text-muted">Started by @Model.Discussion.ApplicationUser?.UserName — @Model.Discussion.CreatedAt.ToLocalTime().ToString("g")</small>
+    <p class="mt-3">@Model.Discussion.Content</p>
+    @if (Model.IsAuthor)
+    {
+        <a class="btn btn-sm btn-outline-secondary" asp-page="/Discussions/Edit" asp-route-id="@Model.Discussion.Id">Edit discussion</a>
+    }
+</section>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <form method="post" asp-page-handler="Reply" asp-route-threadId="@Model.Discussion.Id" class="mb-4">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <label for="reply-thread" class="form-label">Reply to this discussion</label>
+        <textarea id="reply-thread" name="Input.Content" class="form-control" rows="3" required maxlength="10000"></textarea>
+        <button type="submit" class="btn btn-primary mt-2">Post reply</button>
+    </form>
+}
+else
+{
+    <p><a asp-area="Identity" asp-page="/Account/Login">Log in</a> to reply.</p>
+}
+
+<h2 class="h4">Replies</h2>
+@if (Model.Posts.Count == 0)
+{
+    <p class="text-muted">No replies yet.</p>
+}
+
+@foreach (var node in Model.Posts)
+{
+    <partial name="/Pages/Discussions/_PostTree.cshtml" model="node" />
+}
