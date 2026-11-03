@@ -1,0 +1,65 @@
+﻿@page
+@using DiscussionBoard.Services
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2>Create a new account.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.Email">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="Input.Password">Password</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Profile.DisplayName" class="form-control" aria-required="true" placeholder="Display name" />
+                <label asp-for="Input.Profile.DisplayName"></label>
+                <span asp-validation-for="Input.Profile.DisplayName" class="text-danger"></span>
+            </div>
+
+            <fieldset class="mb-3">
+                <legend class="fs-6">Choose an avatar</legend>
+                @foreach (var option in AvatarCatalog.Options)
+                {
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="Input.Profile.AvatarId"
+                               value="@option.Id" id="register-avatar-@option.Id" />
+                        <label class="form-check-label" for="register-avatar-@option.Id">
+                            <img src="@AvatarCatalog.ImagePath(option.Id)" alt="@option.DisplayName avatar"
+                                 class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" />
+                            @option.DisplayName
+                        </label>
+                    </div>
+                }
+                <span asp-validation-for="Input.Profile.AvatarId" class="text-danger d-block"></span>
+            </fieldset>
+
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
