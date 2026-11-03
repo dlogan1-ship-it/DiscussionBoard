@@ -1,4 +1,5 @@
 using DiscussionBoard.Models;
+using DiscussionBoard.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,13 @@ namespace DiscussionBoard.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<ApplicationUser>()
+                .Property(u => u.AvatarId)
+                .HasDefaultValue(AvatarCatalog.DefaultId);
+
+            builder.Entity<ApplicationUser>()
+                .Property(u => u.DisplayName)
+                .HasDefaultValue(string.Empty);
 
             builder.Entity<DiscussionThread>()
                 .HasOne(t => t.Forum)
