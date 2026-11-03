@@ -2,6 +2,10 @@
 <article class="card mb-3">
     <div class="card-body">
         <h2 class="h5"><a asp-page="/Discussions/Details" asp-route-threadId="@Model.Id">@Model.Title</a></h2>
-        <small class="text-muted">Started by @Model.ApplicationUser?.UserName — @Model.CreatedAt.ToLocalTime().ToString("g")</small>
-    </div>
+        <small class="text-muted">
+            <img src="@AuthorDisplay.Avatar(Model.ApplicationUser)" alt="Avatar for @AuthorDisplay.Name(Model.ApplicationUser)"
+                 class="rounded-circle img-fluid" style="width: 25px; height: 25px; object-fit: cover;" />
+            Started by @AuthorDisplay.Name(Model.ApplicationUser) — @Model.CreatedAt.ToLocalTime().ToString("g")
+        </small>
+        </div>
 </article>

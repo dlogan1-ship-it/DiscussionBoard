@@ -1,7 +1,11 @@
 @model DiscussionBoard.Services.PostTreeBuilder.Node
 <article class="border rounded p-3 mb-3" aria-label="Post" data-post-id="@Model.Post.Id">
     <p class="mb-1">@Model.Post.Content</p>
-    <small class="text-muted">@Model.Post.ApplicationUser?.UserName — @Model.Post.CreatedAt.ToLocalTime().ToString("g")</small>
+    <small class="text-muted">
+        <img src="@AuthorDisplay.Avatar(Model.Post.ApplicationUser)" alt="Avatar for @AuthorDisplay.Name(Model.Post.ApplicationUser)"
+             class="rounded-circle img-fluid" style="width: 25px; height: 25px; object-fit: cover;" />
+        @AuthorDisplay.Name(Model.Post.ApplicationUser) — @Model.Post.CreatedAt.ToLocalTime().ToString("g")
+    </small>
     @if (User.Identity?.IsAuthenticated == true)
     {
         <details class="mt-2">
